@@ -18,6 +18,7 @@ const Navigation = () => {
 
     useEffect(()=> {
         if(pathname === "/" || pathname.includes("/detail")) return;
+        else if(pathname === "/login" || pathname === "/signup") return;
 
         const childNodes = navContentRef.current.children;
         const navIndexInfo = [...IndexInfo];
