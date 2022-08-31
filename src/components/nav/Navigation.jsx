@@ -1,10 +1,12 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { userContext } from '../context/UserProvider';
 import IndexInfo from './NavIndexInfo';
 
 const Navigation = () => {
-
+    const context = useContext(userContext);
+    const { userInfo } = context.state;
     
     const navContentRef = useRef(null);
 
@@ -13,6 +15,11 @@ const Navigation = () => {
     const pathname = location.pathname;
 
     const iconClickHandler = (e) => {
+        if(!userInfo) {
+            alert("로그인이 필요합니다.");
+            navigate("/login");
+            return;
+        }
         navigate(e.currentTarget.dataset.url);
     }
 

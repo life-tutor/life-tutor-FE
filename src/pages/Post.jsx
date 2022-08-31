@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useParams,useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { WhiteBackground, HRLineDiv } from '../style/sharedStyle'
@@ -13,8 +13,9 @@ const Post = () => {
     const [hashInput, setHashInput] = useState('');
     const context = useContext(submitDataContext);
     const { postData } = context.state;
-    const { title, posting_content } = postData;
+    const { title, posting_content, hashtag } = postData;
     const { setPostData } = context.actions;
+    const hashRef = useRef(null);
 
     const pathname = useLocation().pathname;
     const params = useParams();
@@ -101,6 +102,11 @@ const Post = () => {
             setPostData({title:'', posting_content:'', hashtag:[]})
         })
     }, [])
+
+    useEffect(()=> {
+        if(!hashtag.length) return;
+        hashRef.current.scrollIntoView({ behavior: "smooth" });
+    }, [hashtag])
     return(
         <WhiteBackground>
         <PostWrapper>
@@ -129,13 +135,15 @@ const Post = () => {
                         </defs>
                     </svg>
                     </button>
-                    <div className='hashtag-viewer'>
+                    {/* <div className='hashtag-viewer'>
                         {postData.hashtag.map((tag, index) => <DeletableBadge key={index} idx={index}>{tag}</DeletableBadge>)}
-                    </div>
+                    </div> */}
                     <input type="text" placeholder="해시태그 입력 후 엔터 또는 스페이스"
                     onChange={changeHashInput} value={hashInput} onKeyUp={keyupSpace}></input>
-                   
                 </HashTagForm>
+                <HashtagViewer ref={hashRef}>
+                        {postData.hashtag.map((tag, index) => <DeletableBadge key={index} idx={index}>{tag}</DeletableBadge>)}
+                    </HashtagViewer>
             </PostContent>
         </PostWrapper>
           </WhiteBackground>
@@ -187,7 +195,7 @@ const PostContent = styled.div`
         font-size:15px;
         font-weight:500;
         line-height:18px;
-        height:200px;
+        height:40vh;
         margin-bottom:10px;
         /* background:blue; */
     }
@@ -204,7 +212,7 @@ const HashTagForm = styled.form`
     box-sizing:border-box;
     align-items:center;
     overflow-x:auto;
-    margin-bottom:150px;
+    margin-bottom:10px;
     
     /* background:red; */
     input {
@@ -230,4 +238,12 @@ const HashTagForm = styled.form`
         background:none;
         border:none;
     }
+`
+
+const HashtagViewer = styled.div`
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    width:100%;
+    margin-bottom:100px;
 `
