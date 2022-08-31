@@ -1,34 +1,29 @@
-import React, { useContext } from "react";
+import React, { useRef } from "react";
+import instance from "../shared/axios";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import NomalBadge from '../components/hashtag/NomalBadge';
+import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AiOutlineLike } from 'react-icons/ai';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
-
-
-import instance from "../shared/axios";
-import NomalBadge from '../components/hashtag/NomalBadge';
-import { userContext } from "../components/context/UserProvider";
-
-import { userTypeTrans } from "../shared/sharedFn";
 import CommentCard from "../components/card/CommentCard";
 import SubmitForm from "../components/submitForm/SubmitForm";
 import Header from "../components/header/Header";
 
-// FIXME: 게시글 본문 줄바꿈처리,
-// 댓글 수정버튼 누르면 모바일의 경우 댓글 입력창이 고정되어 있어서 헷갈리는 UI 수정 필요!
+// TODO: 댓글 수정기능, 댓글 좋아요확인, 게시글 본문 줄바꿈처리
+// FIXME: 
+// 좋아요 했던 게시글 표시 (스테이트) ? 옵셔널체이닝
+// https://mockapi.io/
 
 const Detail = () => {
   const params = useParams();
+  const commentInput = useRef();
+  const navigate = useNavigate();
   const postingId = params.postingId;
   const queryClient = useQueryClient();
   
   // 로그인한 유저의 닉네임 가져오기
-
-  const context = useContext(userContext);
-  const { userInfo } = context.state;
-  const loginNickname = userInfo.nickname;
-
+  const loginNickname = 'king1';
 
   // 게시글 불러오기
   const getPost = async () => {
@@ -79,8 +74,7 @@ const Detail = () => {
 
   return (
     <>
-      {data.nickname === loginNickname && <Header title="본문 상세" isAction={true}/>}
-      {data.nickname !== loginNickname && <Header title="본문 상세" isAction={false}/>}
+      <Header title="본문 상세" isAction={true}/>
       <ContentBox>
         <TitleAndWriterBox>
           <Title>
@@ -89,7 +83,7 @@ const Detail = () => {
           <WriterAndTimeBox>
             <Writer>
               <p>{data.nickname}</p>
-              <p>{userTypeTrans(data.user_type)}</p>
+              <p>{data.user_type}</p>
             </Writer>
             <TimeBox>{timeSet(data.date)}</TimeBox>
           </WriterAndTimeBox>

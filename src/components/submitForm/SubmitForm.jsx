@@ -15,7 +15,7 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg }) => {
     console.log('render');
 
     const addComment = async () => {
-        const comment = { content: commentInput.current.value };
+        const comment = { "content": commentInput.current.value };
         return await instance.post(`/api/board/${postingId}/comment`, comment);
     }
     
@@ -32,7 +32,6 @@ const SubmitForm = ({ postingId, placeholderText, sendMsg }) => {
       e.preventDefault();
       if(location.pathname.includes("/detail/room/chat")) {
         sendMsg(commentInput.current.value);
-        commentInput.current.value="";
         // commentInput.current.focus();
       }
       else commentAddHandler();

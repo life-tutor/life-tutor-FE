@@ -1,20 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import NomalBadge from '../hashtag/NomalBadge';
-import { useNavigate } from 'react-router-dom';
 import { userTypeTrans } from '../../shared/sharedFn';
 import { editPostingTime } from '../../shared/sharedFn';
 import { AiOutlineLike } from 'react-icons/ai';
 import { IoChatboxEllipsesOutline } from 'react-icons/io5';
 
 const PostingCard = ({post}) => {
-    const navigate = useNavigate();
-    const cardClickHandler = () => {
-        navigate(`/detail/posting/${post.posting_id}`);
-    }
 
     return(
-        <PostingCardWrapper onClick={cardClickHandler}>
+        <PostingCardWrapper>
             <PostingCardBody>
             <PostingCardTitle>{post.title}</PostingCardTitle>
             <PostingCardContent>{post.posting_content}</PostingCardContent>
